@@ -7,6 +7,7 @@ import Reminders from './pages/Reminders';
 import Reporting from './pages/Reporting';
 import PatientRegistration from './pages/PatientRegistration';
 import StaffRegistration from './pages/StaffRegistration';
+import StaffProfile from './pages/StaffProfile';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ function AppRoutes() {
         <Route path="/book" element={<AppointmentBooking />} />
         <Route path="/reminders" element={<Reminders />} />
         <Route path="/reporting" element={<Reporting />} />
+        <Route path="/staff/profile" element={<StaffProfile />} />
         <Route path="/" element={<Login />} />
       </Routes>
     </>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const validateEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -14,6 +15,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validate = () => {
     const newErrors = {};
@@ -59,6 +61,11 @@ const Login = () => {
       console.log('Saved to localStorage:', localStorage.getItem('token'), localStorage.getItem('user'));
       setForm({ email: '', password: '' });
       setErrors({});
+      if (data.user.role === 'staff') {
+        navigate('/staff/profile');
+      } else {
+        navigate('/book');
+      }
     } catch (err) {
       setErrors({ api: 'Network error. Please try again.' });
     } finally {
