@@ -8,9 +8,11 @@ import Reporting from './pages/Reporting';
 import PatientRegistration from './pages/PatientRegistration';
 import StaffRegistration from './pages/StaffRegistration';
 import StaffProfile from './pages/StaffProfile';
+import PatientProfile from './pages/PatientProfile';
 
 function AppRoutes() {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -25,7 +27,13 @@ function AppRoutes() {
         <Link to="/register/staff" style={{ marginRight: '1rem' }}>Register as Staff</Link>
         <Link to="/login" style={{ marginRight: '1rem' }}>Login</Link>
         <Link to="/book" style={{ marginRight: '1rem' }}>Book Appointment</Link>
-        <Link to="/reminders" style={{ marginRight: '1rem' }}>Reminders</Link>
+        {user && user.role === 'patient' && (
+          <Link to="/patient/profile" style={{ marginRight: '1rem' }}>Patient Profile</Link>
+        )}
+        {/* Only show Reminders if a user is logged in */}
+        {user && (
+          <Link to="/reminders" style={{ marginRight: '1rem' }}>Reminders</Link>
+        )}
         <Link to="/reporting" style={{ marginRight: '1rem' }}>Reporting</Link>
         <button onClick={handleLogout} style={{ marginLeft: '1rem', padding: '0.5rem 1rem', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
           Logout
@@ -40,6 +48,7 @@ function AppRoutes() {
         <Route path="/reminders" element={<Reminders />} />
         <Route path="/reporting" element={<Reporting />} />
         <Route path="/staff/profile" element={<StaffProfile />} />
+        <Route path="/patient/profile" element={<PatientProfile />} />
         <Route path="/" element={<Login />} />
       </Routes>
     </>

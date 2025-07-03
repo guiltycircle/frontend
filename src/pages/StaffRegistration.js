@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -15,6 +16,7 @@ const StaffRegistration = () => {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePassword = (password) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password);
@@ -58,18 +60,7 @@ const StaffRegistration = () => {
       setSuccess(data.message || 'Registration successful!');
       setForm({ name: '', email: '', password: '', phone: '', countryCode: '+254' });
       setErrors({});
-
-      // After the fetch call
-      const smsRes = await fetch('https://vii.ke/api/v1/sms/send_sms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phone: form.phone,
-          message: `Hello ${form.name}, your registration was successful!`,
-        }),
-      });
-      const smsData = await smsRes.text();
-      console.log('SMS API response:', smsData);
+      setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
       setErrors({ api: 'Network error. Please try again.' });
     } finally {
@@ -98,7 +89,7 @@ const StaffRegistration = () => {
               <option key={c.code} value={c.code}>{c.code} ({c.name})</option>
             ))}
           </select>
-          <input type="tel" name="phone" value={form.phone} onChange={handleChange} style={{ width: '65%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }} />
+          <input type="tel" name="phone" value={form.phone} onChange={handleChange} style={{ width: '65%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }} placeholder="712345678" pattern="[0-9]{7,}" maxLength={15} />
           {errors.phone && <div style={{ color: 'red', fontSize: 13 }}>{errors.phone}</div>}
         </div>
         <div style={{ marginBottom: 16 }}>

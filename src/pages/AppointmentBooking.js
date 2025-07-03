@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -8,6 +9,7 @@ const AppointmentBooking = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   // Fetch staff users
   useEffect(() => {
@@ -68,6 +70,7 @@ const AppointmentBooking = () => {
       }
       setSuccess('Appointment booked successfully!');
       setForm({ staff: '', date: '', time: '' });
+      setTimeout(() => navigate('/patient/profile'), 1200);
     } catch (err) {
       setError('Network error. Please try again.');
     } finally {

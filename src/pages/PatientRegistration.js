@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -15,6 +16,7 @@ const PatientRegistration = () => {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePassword = (password) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password);
@@ -58,6 +60,7 @@ const PatientRegistration = () => {
       setSuccess(data.message || 'Registration successful!');
       setForm({ name: '', email: '', password: '', phone: '', countryCode: '+254' });
       setErrors({});
+      setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
       setErrors({ api: 'Network error. Please try again.' });
     } finally {
